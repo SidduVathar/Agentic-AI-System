@@ -1,0 +1,18 @@
+Create a virtual env 
+1.  python -m venv venv
+2.  .\venv\Scripts\activate           #Windows
+
+Then download the required packages here
+
+to establish the connection between supabase and liteLLM
+pip install prisma
+# create a prisma schema folder and run 
+set DATABASE_URL=postgresql://postgres:Sasa%2F4231.@localhost:5432/LiteLLM
+
+python -m prisma db pull
+python -m prisma db push
+python -m prisma generate
+
+
+First Install the LiteLLM packages
+pip install "litellm[proxy]"

@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: postgres
+    container_name: test_postgres
+    environment:
+      POSTGRES_USER: Username
+      POSTGRES_PASSWORD: Password
+      POSTGRES_DB: LiteLLM_DB
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: # User mail
+      PGADMIN_DEFAULT_PASSWORD: #Password
+    ports:
+      - "8090:80"
+    depends_on:
+      - postgres
+
+  litellm-proxy:
+    image: ghcr.io/berriai/litellm:main-latest
+    container_name: litellm_proxy
+    ports:
+      - "4000:4000"
+    environment:
+      - LITELLM_MASTER_KEY=master_key
+      - DATABASE_URL=postgresql://password.@postgres:5432/LiteLLM_DB
+    volumes:
+      - ./Litellm_config.yaml:/app/config.yaml
+    entrypoint: sh -c "litellm --config /app/config.yaml --port 4000"
+    depends_on:
+      - postgres
